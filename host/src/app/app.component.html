@@ -1,0 +1,9 @@
+<header>Module federation with Angular 12</header>
+
+<button routerLink="/">Main</button>
+
+<button *ngFor="let button of buttons" [routerLink]="button.route">
+  {{ button.label }}
+</button>
+
+<router-outlet></router-outlet>

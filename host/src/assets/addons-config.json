@@ -1,0 +1,22 @@
+{
+  "addons": [
+    {
+      "name": "Angular Addon",
+      "components": ["angular-addon"],
+      "url": "http://localhost:4000/remoteEntry.js",
+      "remoteName": "angularAddon",
+      "exposedModule": "./web-component",
+      "permissions": [],
+      "nav": []
+    },
+    {
+      "name": "Vue Addon",
+      "components": ["vue-addon"],
+      "url": "http://localhost:4001/remoteEntry.js",
+      "remoteName": "vueAddon",
+      "exposedModule": "./web-component",
+      "permissions": [],
+      "nav": []
+    }
+  ]
+}
