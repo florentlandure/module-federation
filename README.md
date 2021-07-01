@@ -5,8 +5,8 @@ This is an example of using module federation (webpack 5) and web components.
 There are 3 apps:
 
 - Host
-- Angular addon
-- Vue addon
+- Angular addon [docs](./angular-addon/README.md)
+- Vue addon [docs](./vue-addon/README.md)
 
 ## Setup
 
