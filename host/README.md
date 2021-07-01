@@ -1,27 +1,84 @@
-# Host
+# Angular host with module federation
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.0.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Module federation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Module federation was added by using [@angular-architects/module-federation](https://www.npmjs.com/package/@angular-architects/module-federation).
 
-## Build
+## Router
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+The host hanlde 2 types of routes:
 
-## Running unit tests
+- Normal routes -> components and modules registered in the host app directly
+- Addon routes -> addons loaded at runtime using module federation
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Addon wrapper component
 
-## Running end-to-end tests
+The addon wrapper component handles loading the addons and injecting them in the DOM.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- It first get loads the addon config based on the url parameters.
 
-## Further help
+```typescript
+protected async init(url: string): Promise<void> {
+    const componentName = url.replace(/.*\/addon\//, '').replace(/\/.*/, '');
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+    if (componentName) {
+      const config = await this.getAddonConfig(componentName);
+
+      if (config) {
+        await this.initAddon(config, componentName);
+      }
+    }
+}
+```
+
+- Then it loads the javascript for the addon
+
+```typescript
+protected loadScript(url: string, componentName: string): Promise<void> {
+    const scriptId = componentName + '-script';
+    return new Promise((resolve, reject) => {
+      if (document.getElementById(scriptId)) {
+        resolve();
+      } else {
+        const script = document.createElement('script');
+        script.src = url;
+        script.id = scriptId;
+        script.onload = () => {
+          resolve();
+        };
+        document.head.appendChild(script);
+      }
+    });
+}
+```
+
+- Then it loads the remote container by using the module federation APIs
+
+```typescript
+protected async loadComponent(scope: string, module: string): Promise<any> {
+    // Initializes the share scope. This fills it with known provided modules from this build and all remotes
+    await __webpack_init_sharing__('default');
+
+    const container = (window as any)[scope];
+    // Initialize the container, it may provide shared modules
+    await container.init(__webpack_share_scopes__.default);
+    const factory = await (window as any)[scope].get(module);
+    return factory();
+}
+```
+
+- Finally it injects the web component in the DOM.
+
+```typescript
+protected appendComponentToDom(componentName: string): void {
+    // We expect the remote module to register a web component
+    const element = document.createElement(componentName);
+    this.host.nativeElement.appendChild(element);
+}
+```
