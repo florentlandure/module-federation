@@ -1,0 +1,26 @@
+{
+  "name": "module-federation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:all": "concurrently --kill-others \"npm run start:vue-addon\" \"npm run start:angular-addon\" \"npm run start:host\"",
+    "start:host": "cd ./host && npm start && cd ..",
+    "start:angular-addon": "cd ./angular-addon && npm start && cd ..",
+    "start:vue-addon": "cd ./vue-addon && npm run serve && cd .."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/florentlandure/module-federation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/florentlandure/module-federation/issues"
+  },
+  "homepage": "https://github.com/florentlandure/module-federation#readme",
+  "devDependencies": {
+    "concurrently": "^6.2.0"
+  }
+}

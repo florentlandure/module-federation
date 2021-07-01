@@ -66,17 +66,19 @@
           "builder": "ngx-build-plus:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "addon:build:production",
+              "browserTarget": "angular-addon:build:production",
               "extraWebpackConfig": "webpack.prod.config.js"
             },
-            "development": { "browserTarget": "addon:build:development" }
+            "development": {
+              "browserTarget": "angular-addon:build:development"
+            }
           },
           "defaultConfiguration": "development",
           "options": { "extraWebpackConfig": "webpack.config.js", "port": 4000 }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": { "browserTarget": "addon:build" }
+          "options": { "browserTarget": "angular-addon:build" }
         },
         "test": {
           "builder": "ngx-build-plus:karma",

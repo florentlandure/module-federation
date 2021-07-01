@@ -9,11 +9,10 @@ module.exports = {
         name: 'vueAddon',
         filename: 'remoteEntry.js',
         exposes: {
-          './web-component': './src/main.js',
+          './web-component': './src/bootstrap.js',
         },
         shared: {
-          vue: { singleton: true, strictVersion: true },
-          'vue-custom-element': { singleton: true, strictVersion: true },
+          vue: { singleton: true, eager: false, strictVersion: true },
         },
       }),
     ],
