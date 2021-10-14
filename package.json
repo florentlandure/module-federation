@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:all": "concurrently --kill-others \"npm run start:vue-addon\" \"npm run start:angular-addon\" \"npm run start:host\"",
+    "start:angular": "concurrently --kill-others \"npm run start:angular-addon\" \"npm run start:host\"",
     "start:host": "cd ./host && npm start && cd ..",
     "start:angular-addon": "cd ./angular-addon && npm start && cd ..",
     "start:vue-addon": "cd ./vue-addon && npm run serve && cd .."
