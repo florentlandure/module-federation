@@ -10,6 +10,21 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app w
 
 Module federation was added by using [@angular-architects/module-federation](https://www.npmjs.com/package/@angular-architects/module-federation).
 
+
+## Bootstrap
+During the bootstrap of the app, the host saves the platform on the global scope. It will be reused by the addons.
+
+To allow this, the host needs to always have an updated angular version.
+
+```typescript
+const hostAngularPlatform = platformBrowserDynamic();
+(window as any).hostAngularPlatform = hostAngularPlatform;
+
+hostAngularPlatform
+  .bootstrapModule(AppModule)
+  .catch((err: any) => console.error(err));
+```
+
 ## Router
 
 The host hanlde 2 types of routes:

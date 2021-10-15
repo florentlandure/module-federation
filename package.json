@@ -6,8 +6,11 @@
   "scripts": {
     "start:all": "concurrently --kill-others \"npm run start:vue-addon\" \"npm run start:angular-addon\" \"npm run start:host\"",
     "start:angular": "concurrently --kill-others \"npm run start:angular-addon\" \"npm run start:host\"",
+    "start:angular:prod": "concurrently --kill-others \"npm run start:angular-addon:prod\" \"npm run start:host:prod\"",
     "start:host": "cd ./host && npm start && cd ..",
     "start:angular-addon": "cd ./angular-addon && npm start && cd ..",
+    "start:host:prod": "cd ./host && npm start -- -c=production && cd ..",
+    "start:angular-addon:prod": "cd ./angular-addon && npm start -- -c=production && cd ..",
     "start:vue-addon": "cd ./vue-addon && npm run serve && cd .."
   },
   "repository": {

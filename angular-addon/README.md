@@ -10,6 +10,27 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4000/`. The app w
 
 Module federation was added by using [@angular-architects/module-federation](https://www.npmjs.com/package/@angular-architects/module-federation).
 
+## Bootstrap
+Angular doesn't allow to load the platform more than once so the host store the platform on the global scope.
+
+The addon can grab it like this:
+
+```typescript
+const hostAngularPlatform = (window as any).hostAngularPlatform;
+
+if (environment.production && !hostAngularPlatform) {
+  enableProdMode();
+}
+
+const platform = hostAngularPlatform || platformBrowserDynamic();
+
+platform
+  .bootstrapModule(AppModule, { ngZone: (window as any).ngZone })
+  .catch((err: any) => console.error(err));
+```
+
+We only call enableProdMode when the host is not loaded (ie. when serving the addon as a standalone app) because it has already been done by the host.
+
 ### Configuration
 
 The addon is registered as a remote container in the `webpack.config.js` file.

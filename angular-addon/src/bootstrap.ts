@@ -1,20 +1,16 @@
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, isDevMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-declare const require: any;
-const ngVersion = require('../package.json').dependencies['@angular/core'];
+const hostAngularPlatform = (window as any).hostAngularPlatform;
 
-if (environment.production) {
+if (environment.production && !hostAngularPlatform) {
   enableProdMode();
 }
 
-const platform =
-  ((window as any).angularPlatform
-    ? (window as any).angularPlatform[ngVersion]
-    : platformBrowserDynamic()) || platformBrowserDynamic();
+const platform = hostAngularPlatform || platformBrowserDynamic();
 
 platform
   .bootstrapModule(AppModule, { ngZone: (window as any).ngZone })
